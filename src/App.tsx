@@ -1,0 +1,31 @@
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import Tasks from './pages/Tasks';
+import Settings from './pages/Settings';
+import Menu from './components/Menu';
+import './App.css';
+import './components/Menu.css';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+    <div id="container">
+        <Menu />
+        <Routes>
+          <Route path="/" element={<Tasks />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+    </div>
+    </BrowserRouter>
+  );
+}
+
+// function MenuWrapper() {
+//   const location = useLocation();
+//   let active: 'home' | 'settings' | 'user' = 'user';
+//   if (location.pathname === '/settings') {
+//     active = 'settings';
+//   } else if (location.pathname === '/home') {
+//     active = 'home';
+//   }
+//   return <Menu active={active} />;
+// }

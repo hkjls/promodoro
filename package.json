@@ -1,0 +1,32 @@
+{
+  "name": "promodor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Application React + TypeScript — Promodor",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.0.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "promodor"
+  ],
+  "author": "",
+  "license": "MIT"
+}
