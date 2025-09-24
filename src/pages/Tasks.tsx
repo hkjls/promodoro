@@ -30,16 +30,16 @@ const Tasks = () => {
   };
 
   const selectCurrentTask = () => {
-    let lastIncomplete = null;
-    for (let i = tasks.length - 1; i >= 0; i--) {
+    let firstIncomplete = null;
+    for (let i = 0; i < tasks.length; i++) {
       if (!tasks[i].completed) {
-        lastIncomplete = tasks[i];
+        firstIncomplete = tasks[i];
         break;
       }
     }
-    if (lastIncomplete) {
-      setCurrentTask(lastIncomplete.text);
-      setCurrentTaskId(lastIncomplete.id);
+    if (firstIncomplete) {
+      setCurrentTask(firstIncomplete.text);
+      setCurrentTaskId(firstIncomplete.id);
     } else {
       setCurrentTask('No tasks left');
       setCurrentTaskId(null);
