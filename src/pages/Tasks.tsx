@@ -6,12 +6,14 @@ import SkipForwardIcon from '../images/skip-forward.png';
 import './Tasks.css';
 
 const Tasks = () => {
-  const [time, setTime] = useState(0.5 * 60); // 25 minutes
-  const [pauseTime, setPauseTime] = useState(0.5 * 60); // 5 minutes
+  const FOCUS_TIME = 0.5 * 60;
+  const BREAK_TIME = 0.5 * 60;
+  const [time, setTime] = useState(FOCUS_TIME);
+  const [breakTimeState, setBreakTimeState] = useState(BREAK_TIME);
   const [isRunning, setIsRunning] = useState(false);
   const [phase, setPhase] = useState<'focus' | 'break'>('focus');
-  const [currentTask, setCurrentTask] = useState('Current Task');
-  const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
+  const [currentTask, setCurrentTask] = useState('');
+  const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
   const [tasks, setTasks] = useState([
     { id: 1, text: 'Task 1', completed: false },
     { id: 2, text: 'Task 2', completed: false },
@@ -19,12 +21,29 @@ const Tasks = () => {
     { id: 4, text: 'Task 4', completed: false },
   ]);
 
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
     const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
+  };
+
+  const selectCurrentTask = () => {
+    let lastIncomplete = null;
+    for (let i = tasks.length - 1; i >= 0; i--) {
+      if (!tasks[i].completed) {
+        lastIncomplete = tasks[i];
+        break;
+      }
+    }
+    if (lastIncomplete) {
+      setCurrentTask(lastIncomplete.text);
+      setCurrentTaskId(lastIncomplete.id);
+    } else {
+      setCurrentTask('No tasks left');
+      setCurrentTaskId(null);
+    }
   };
 
   useEffect(() => {
@@ -32,20 +51,24 @@ const Tasks = () => {
       intervalRef.current = setInterval(() => {
         setTime((prevTime) => {
           if (prevTime <= 1) {
-            clearInterval(intervalRef.current!);
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
             setIsRunning(false);
             if (phase === 'focus') {
-              setPhase('break');
-              setTime(pauseTime);
-              // Advance to next task after focus completion
-              const nextIndex = currentTaskIndex + 1;
-              if (nextIndex < tasks.length) {
-                setCurrentTaskIndex(nextIndex);
-                setCurrentTask(tasks[nextIndex].text);
+              if (currentTaskId !== null) {
+                setTasks((prevTasks) =>
+                  prevTasks.map((task) =>
+                    task.id === currentTaskId ? { ...task, completed: true } : task
+                  )
+                );
               }
+              setPhase('break');
+              setTime(breakTimeState);
             } else {
               setPhase('focus');
-              setTime(25 * 60);
+              setTime(FOCUS_TIME);
+              selectCurrentTask();
             }
             return 0;
           }
@@ -64,21 +87,36 @@ const Tasks = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, phase, pauseTime, currentTaskIndex, tasks]);
+  }, [isRunning, phase, breakTimeState, currentTaskId, tasks]);
 
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
+  const toggleTask = (id: number) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task))
+    );
+    if (id === currentTaskId) {
+      selectCurrentTask();
+    }
   };
 
   const handlePlayPause = () => {
     if (!isRunning) {
-      if (currentTask === 'Current Task') {
-        setCurrentTask('Task 1');
+      if (phase === 'focus' && currentTaskId === null) {
+        const hasIncompleteTask = tasks.some(task => !task.completed);
+        if (!hasIncompleteTask) {
+          return;
+        }
+        selectCurrentTask();
       }
     }
-    setIsRunning(!isRunning);
+    setIsRunning((prev) => !prev);
+  };
+
+  const handleSkip = () => {
+    if (phase !== 'focus' || currentTaskId === null) return;
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => (task.id === currentTaskId ? { ...task, completed: true } : task))
+    );
+    selectCurrentTask();
   };
 
   const handleReset = () => {
@@ -87,9 +125,9 @@ const Tasks = () => {
       intervalRef.current = null;
     }
     setPhase('focus');
-    setTime(25 * 60);
-    setCurrentTask('Current Task');
-    setCurrentTaskIndex(0);
+    setTime(FOCUS_TIME);
+    setCurrentTask('');
+    setCurrentTaskId(null);
     setIsRunning(false);
   };
 
@@ -106,7 +144,7 @@ const Tasks = () => {
             </div>
           {/* Current Task Section */}
             <div className="current-task-section">
-              <h3>{currentTask}</h3>
+              <h3>{phase === 'focus' ? currentTask : 'Break Time'}</h3>
               <div className="controls">
                   <button onClick={handleReset}>
                     <img src={RotateCcwIcon} alt="Reset" className="control-icon" />
@@ -114,8 +152,8 @@ const Tasks = () => {
                   <button onClick={handlePlayPause}>
                     <img src={isRunning ? PauseIcon : PlayIcon} alt={isRunning ? "Pause" : "Play"} className="control-icon" />
                   </button>
-                  <button onClick={handlePlayPause}>
-                    <img src={SkipForwardIcon} alt="Next" className="control-icon" />
+                  <button onClick={handleSkip}>
+                    <img src={SkipForwardIcon} alt="Skip" className="control-icon" />
                   </button>
               </div>
             </div>

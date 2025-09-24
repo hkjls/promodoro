@@ -1,0 +1,14 @@
+ I. Timer System
+    The Timer System is a duration between what the user want focus in his work or when
+    he must take a break.
+
+    1. The stopWatch
+        the stopWatch define the duration of a focus time from a choosed time (eg: 25:00)
+    to 00:00
+    2. focus Timer
+        a. During this time, the name of the last task which haven't a status "Done" on
+    the task list must appear under the stopWatch.
+        b. At the end of each lap, the current task which appear under the stopWatch 
+    must have the status "Done" on the task list then the user can start the break time
+    3. Break Timer
+        the break Timer is time during that the user can take a break
