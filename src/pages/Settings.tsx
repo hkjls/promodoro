@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { usePromodoreContext } from '../Context/promodoreContext';
 import './Settings.css';
 
 const Settings = () => {
-  const [workDuration, setWorkDuration] = useState(25);
-  const [shortBreak, setShortBreak] = useState(5);
-  const [longBreak, setLongBreak] = useState(15);
+  const { workDuration, setWorkDuration, shortBreak, setShortBreak, longBreak, setLongBreak } = usePromodoreContext();
   const [notifications, setNotifications] = useState([false, false, false, false]);
 
   const toggleNotification = (index:any) => {

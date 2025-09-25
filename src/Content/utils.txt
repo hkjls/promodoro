@@ -1,0 +1,6 @@
+In the tasks.tsx file, we must put some function in the utils dir.
+For example, the formatTime function. You can put this function in to the utils dir
+and call it in Tasks.tsx. And if there are other function that you can put in the
+utils dir you can put them in creating a file in utils dir
+
+=> New Update

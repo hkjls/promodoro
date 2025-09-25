@@ -2,19 +2,22 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Tasks from './pages/Tasks';
 import Settings from './pages/Settings';
 import Menu from './components/Menu';
+import { PromodoreProvider } from './Context/promodoreContext';
 import './App.css';
 import './components/Menu.css';
 
 export default function App() {
   return (
     <BrowserRouter>
-    <div id="container">
-        <Menu />
-        <Routes>
-          <Route path="/" element={<Tasks />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-    </div>
+      <PromodoreProvider>
+        <div id="container">
+            <Menu />
+            <Routes>
+              <Route path="/" element={<Tasks />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+        </div>
+      </PromodoreProvider>
     </BrowserRouter>
   );
 }

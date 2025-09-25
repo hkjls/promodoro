@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { usePromodoreContext } from '../Context/promodoreContext';
+import { formatTime } from '../utils/formatTime';
 import RotateCcwIcon from '../images/rotate-ccw.png';
 import PlayIcon from '../images/play.png';
 import PauseIcon from '../images/pause.png';
@@ -6,28 +8,32 @@ import SkipForwardIcon from '../images/skip-forward.png';
 import './Tasks.css';
 
 const Tasks = () => {
-  const FOCUS_TIME = 0.5 * 60;
-  const BREAK_TIME = 0.5 * 60;
-  const [time, setTime] = useState(FOCUS_TIME);
-  const [breakTimeState, setBreakTimeState] = useState(BREAK_TIME);
+  const { 
+    workDuration,
+    shortBreak,
+    longBreak,
+    currentTask, 
+    currentTaskId, 
+    tasks, 
+    setTasks, 
+    setCurrentTask, 
+    setCurrentTaskId,
+    phase,
+    setPhase
+ } = usePromodoreContext();
+
+  const [time, setTime] = useState(workDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
-  const [phase, setPhase] = useState<'focus' | 'break'>('focus');
-  const [currentTask, setCurrentTask] = useState('');
-  const [currentTaskId, setCurrentTaskId] = useState<number | null>(null);
-  const [tasks, setTasks] = useState([
-    { id: 1, text: 'Task 1', completed: false },
-    { id: 2, text: 'Task 2', completed: false },
-    { id: 3, text: 'Task 3', completed: false },
-    { id: 4, text: 'Task 4', completed: false },
-  ]);
 
   const intervalRef = useRef<number | null>(null);
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-    return `${mins}:${secs}`;
-  };
+  useEffect(() => {
+    if (phase === 'focus') {
+      setTime(workDuration * 60);
+    } else {
+      setTime(shortBreak * 60);
+    }
+  }, [phase, workDuration, shortBreak]);
 
   const selectCurrentTask = () => {
     let firstIncomplete = null;
@@ -57,17 +63,21 @@ const Tasks = () => {
             setIsRunning(false);
             if (phase === 'focus') {
               if (currentTaskId !== null) {
+                const wasLastTask = tasks.filter(task => !task.completed).length === 1;
                 setTasks((prevTasks) =>
                   prevTasks.map((task) =>
                     task.id === currentTaskId ? { ...task, completed: true } : task
                   )
                 );
+                setPhase('break');
+                setTime(wasLastTask ? longBreak * 60 : shortBreak * 60);
+              } else {
+                setPhase('break');
+                setTime(shortBreak * 60);
               }
-              setPhase('break');
-              setTime(breakTimeState);
             } else {
               setPhase('focus');
-              setTime(FOCUS_TIME);
+              setTime(workDuration * 60);
               selectCurrentTask();
             }
             return 0;
@@ -87,7 +97,7 @@ const Tasks = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, phase, breakTimeState, currentTaskId, tasks]);
+  }, [isRunning, phase, currentTaskId, tasks, workDuration, shortBreak, longBreak]);
 
   const toggleTask = (id: number) => {
     setTasks((prevTasks) =>
@@ -108,7 +118,7 @@ const Tasks = () => {
         selectCurrentTask();
       }
     }
-    setIsRunning((prev) => !prev);
+    setIsRunning(!isRunning);
   };
 
   const handleSkip = () => {
@@ -125,7 +135,7 @@ const Tasks = () => {
       intervalRef.current = null;
     }
     setPhase('focus');
-    setTime(FOCUS_TIME);
+    setTime(workDuration * 60);
     setCurrentTask('');
     setCurrentTaskId(null);
     setIsRunning(false);
@@ -155,6 +165,14 @@ const Tasks = () => {
                   <button onClick={handleSkip}>
                     <img src={SkipForwardIcon} alt="Skip" className="control-icon" />
                   </button>
+              </div>
+            </div>
+
+            <div id="isTaskFinished">
+              <p>Is the task finished?</p>
+              <div id="confirm">
+                <button className="confirm">Yes</button>
+                <button className="confirm">No</button>
               </div>
             </div>
         </div>

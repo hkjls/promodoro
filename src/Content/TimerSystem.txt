@@ -12,3 +12,12 @@
     must have the status "Done" on the task list then the user can start the break time
     3. Break Timer
         the break Timer is time during that the user can take a break
+
+=> New Update
+
+I create a button on the tasks.tsx, so i want to activate it and there are my request:
+    1. Hide the block with the id "isTaskFinished"
+    2. When the user start the timer and when this last finished show the button
+(the block with the "isTaskFinished" id) to ask to the user is the task is finished
+    3. If the user click "yes" set the current task on the task list done if not 
+continue to the time break

@@ -1,0 +1,23 @@
+                        Handle The Context of the Promodore
+
+There are the contexts i want to handle :
+        1. the focus time and break time
+        2. the current task and the current task id
+        3. the tasks (the list of the task)
+
+Please configure the context promodoreContext in the Context dir and configure the
+tasks.tsx file by using this context. So, if i resume you must configure the 
+promodoreContext and update the Tasks.tsx and App.tsx for the context. 
+
+With the settings page : There is a context we must configure too.
+I want you integrate the workDuration, Short Break and Long Break value in our 
+promodoreContext. So when i change the WorkDuration value, the focus time in the 
+tasks.tsx must be change and when the ShortBreak value is change the break time 
+changed too.
+The long break value is set in the to break time when all the tasks is done, that
+mean when the last task is finished, the value of the break time is equal to the
+long break duration
+
+===> NewUpdate
+
+
