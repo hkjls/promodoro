@@ -21,6 +21,8 @@ interface PromodoreContextType {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   phase: 'focus' | 'break';
   setPhase: (phase: 'focus' | 'break') => void;
+  selectedNotificationPath: string;
+  setSelectedNotificationPath: (path: string) => void;
 }
 
 const PromodoreContext = createContext<PromodoreContextType | undefined>(undefined);
@@ -59,6 +61,7 @@ export const PromodoreProvider: React.FC<PromodoreProviderProps> = ({ children }
   ]);
 
   const [phase, setPhase] = useState<'focus' | 'break'>('focus');
+  const [selectedNotificationPath, setSelectedNotificationPath] = useState('');
 
 
   useEffect(() => {
@@ -80,7 +83,8 @@ export const PromodoreProvider: React.FC<PromodoreProviderProps> = ({ children }
       currentTask, setCurrentTask,
       currentTaskId, setCurrentTaskId,
       tasks, setTasks,
-      phase, setPhase
+      phase, setPhase,
+      selectedNotificationPath, setSelectedNotificationPath
     }}>
       {children}
     </PromodoreContext.Provider>

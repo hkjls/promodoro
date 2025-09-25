@@ -13,28 +13,30 @@ const TaskSection = () => {
   return (
     <div className="tasks-section">
       <h2>Tasks</h2>
-      <table className="task-table">
-        <thead>
-          <tr>
-            <th>Done</th>
-            <th>Task</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.map(task => (
-            <tr key={task.id}>
-              <td>
-                <input 
-                  type="checkbox" 
-                  checked={task.completed} 
-                  onChange={() => toggleTask(task.id)} 
-                />
-              </td>
-              <td className={task.completed ? 'completed' : ''}>{task.text}</td>
+      <div className="table-container">
+        <table className="task-table">
+          <thead>
+            <tr>
+              <th>Done</th>
+              <th>Task</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {tasks.map(task => (
+              <tr key={task.id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={task.completed}
+                    onChange={() => toggleTask(task.id)}
+                  />
+                </td>
+                <td className={task.completed ? 'completed' : ''}>{task.text}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div id="tasksCrud">
         <ul>
             <li className="btn-crud">add</li>

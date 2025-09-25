@@ -119,16 +119,14 @@
 .task-table {
   width: 100%;
   border-collapse: collapse;
-  height: 300px;
-  overflow-y: auto;
-  display: block;
-}
-
-.task-table thead, .task-table tbody, .task-table tr {
-  display: table;
-  width: 100%;
   table-layout: fixed;
 }
+
+.table-container {
+  overflow-y: auto;
+  height: 300px;
+}
+
 
 .task-table th, .task-table td {
   padding: 10px;
@@ -152,11 +150,11 @@
 }
 
 /* Hide scrollbar for task-table */
-.task-table::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
   display: none;
 }
 
-.task-table {
+.table-container {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */

@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePromodoreContext } from '../Context/promodoreContext';
 import { formatTime } from '../utils/formatTime';
+import { playNotificationSound } from '../utils/playAudio';
 import RotateCcwIcon from '../images/rotate-ccw.png';
 import PlayIcon from '../images/play.png';
 import PauseIcon from '../images/pause.png';
 import SkipForwardIcon from '../images/skip-forward.png';
 
 const TimerSection = () => {
-  const { 
+  const {
     workDuration,
     shortBreak,
     longBreak,
-    currentTask, 
-    currentTaskId, 
-    tasks, 
-    setTasks, 
-    setCurrentTask, 
+    currentTask,
+    currentTaskId,
+    tasks,
+    setTasks,
+    setCurrentTask,
     setCurrentTaskId,
     phase,
-    setPhase
+    setPhase,
+    selectedNotificationPath
   } = usePromodoreContext();
 
   const [time, setTime] = useState(workDuration * 60);
@@ -61,6 +63,9 @@ const TimerSection = () => {
               clearInterval(intervalRef.current);
             }
             setIsRunning(false);
+            if (selectedNotificationPath) {
+              playNotificationSound(selectedNotificationPath);
+            }
             if (phase === 'focus') {
               setShowTaskFinished(true);
             } else {
