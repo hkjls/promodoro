@@ -18,6 +18,11 @@ declare module '*.svg' {
   export default ReactComponent;
 }
 
+declare module "*.mp3" {
+  const src: string;
+  export default src;
+}
+
 // Types pour import.meta.env (variables Vite)
 interface ImportMetaEnv {
   readonly VITE_API_URL?: string;
