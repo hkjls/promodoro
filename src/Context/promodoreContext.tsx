@@ -48,6 +48,14 @@ export const PromodoreProvider: React.FC<PromodoreProviderProps> = ({ children }
     { id: 2, text: 'Task 2', completed: false },
     { id: 3, text: 'Task 3', completed: false },
     { id: 4, text: 'Task 4', completed: false },
+    { id: 5, text: 'Task 5', completed: false },
+    { id: 6, text: 'Task 6', completed: false },
+    { id: 7, text: 'Task 7', completed: false },
+    { id: 8, text: 'Task 8', completed: false },
+    { id: 9, text: 'Task 9', completed: false },
+    { id: 10, text: 'Task 10', completed: false },
+    { id: 11, text: 'Task 11', completed: false },
+    { id: 12, text: 'Task 12', completed: false },
   ]);
 
   const [phase, setPhase] = useState<'focus' | 'break'>('focus');
