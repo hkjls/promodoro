@@ -4,7 +4,6 @@ import Settings from './pages/Settings';
 import Menu from './components/Menu';
 import { PromodoreProvider } from './Context/promodoreContext';
 import './App.css';
-import './components/Menu.css';
 
 export default function App() {
   return (

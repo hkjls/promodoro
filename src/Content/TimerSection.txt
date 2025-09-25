@@ -1,0 +1,16 @@
+I. TimerSection.tsx component 
+    I want you create a component "TimerSection" in the components dir and you 
+import the component into the tasks.tsx
+
+For that, you must modify the tasks.tsx the id of the part you must put into
+the TimerSection.tsx is "TimerSection".
+
+Create this components and get all necessary function in the tasks.tsx and put 
+them in the "TimerSection.tsx" that you will create
+
+II. TaskSection.tsx component
+    Create a taskSection component in the components dir and import the component
+into the tasks.tsx
+
+    the id of the component in the tasks.tsx is "tasks-section" and modify the 
+tasks.tsx file

@@ -4,7 +4,7 @@ import HouseIcon from '../images/house.png';
 import SettingsIcon from '../images/settings.png';
 import UserIcon from '../images/user.png';
 
-const Menu=()=> {
+const Menu = () => {
   return (
     <nav className="navbar">
       <Link to="/" className={`nav-link`}>

@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import { usePromodoreContext } from '../Context/promodoreContext';
-import './Settings.css';
 
 const Settings = () => {
   const { workDuration, setWorkDuration, shortBreak, setShortBreak, longBreak, setLongBreak } = usePromodoreContext();
-  const [notifications, setNotifications] = useState([false, false, false, false]);
-
-  const toggleNotification = (index:any) => {
-    const newNotifications = [...notifications];
-    newNotifications[index] = !newNotifications[index];
-    setNotifications(newNotifications);
-  };
+  const [selectedNotification, setSelectedNotification] = useState<number | null>(null);
 
   return (
     <div id="settings-page">
@@ -65,13 +58,14 @@ const Settings = () => {
         <div className="notification-section">
           <h2>Notifications</h2>
           <div className="toggles">
-            {notifications.map((enabled, index) => (
+            {[0, 1, 2, 3].map((index) => (
               <label key={index} className="toggle-item">
                 <span className="toggle-label">Notification {index + 1}</span>
                 <input 
-                  type="checkbox" 
-                  checked={enabled} 
-                  onChange={() => toggleNotification(index)}
+                  type="radio" 
+                  name="notification" 
+                  checked={selectedNotification === index} 
+                  onChange={() => setSelectedNotification(index)}
                   className="toggle"
                 />
               </label>
